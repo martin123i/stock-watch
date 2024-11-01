@@ -2,10 +2,9 @@
 package db
 
 import (
-	"path/to/your/models"
-
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"stocktracker.com/app/internal/model"
 )
 
 var DB *gorm.DB
@@ -18,5 +17,5 @@ func Init() {
 	}
 
 	// Migrate the schema
-	DB.AutoMigrate(&models.User{}, &models.Portfolio{})
+	DB.AutoMigrate(&model.User{}, &model.Portfolio{})
 }

@@ -3,11 +3,11 @@ package portfolio
 
 import (
 	"net/http"
-	"path/to/your/auth"
-	"path/to/your/db"
-	"path/to/your/models"
 
 	"github.com/gin-gonic/gin"
+	"stocktracker.com/app/internal/auth"
+	"stocktracker.com/app/internal/db"
+	"stocktracker.com/app/internal/model"
 )
 
 func AddFavorite(c *gin.Context) {
@@ -20,26 +20,26 @@ func AddFavorite(c *gin.Context) {
 		return
 	}
 
-	var user models.User
+	var user model.User
 	if err := db.DB.Where("username = ?", username).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	portfolio := models.Portfolio{UserID: user.ID, Symbol: request.Symbol}
+	portfolio := model.Portfolio{UserID: user.ID, Symbol: request.Symbol}
 	db.DB.Create(&portfolio)
 	c.JSON(http.StatusOK, gin.H{"message": "Stock added to portfolio"})
 }
 
 func GetFavorites(c *gin.Context) {
 	username, _ := auth.GetUserFromToken(c)
-	var user models.User
+	var user model.User
 	if err := db.DB.Where("username = ?", username).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
-	var portfolio []models.Portfolio
+	var portfolio []model.Portfolio
 	db.DB.Where("user_id = ?", user.ID).Find(&portfolio)
 	c.JSON(http.StatusOK, portfolio)
 }

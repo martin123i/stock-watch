@@ -3,9 +3,9 @@ package middleware
 
 import (
 	"net/http"
-	"path/to/your/auth"
 
 	"github.com/gin-gonic/gin"
+	"stocktracker.com/app/internal/auth"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
